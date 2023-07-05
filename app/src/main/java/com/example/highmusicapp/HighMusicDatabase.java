@@ -1,2 +1,4 @@
-package com.example.highmusicapp;public class HighMusicDatabase {
+package com.example.highmusicapp;
+
+public class HighMusicDatabase {
 }
