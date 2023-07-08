@@ -1,2 +1,26 @@
-package com.example.highmusicapp.Dao;public class ProductDAO {
+package com.example.highmusicapp.Dao;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+
+import com.example.highmusicapp.Models.Product;
+
+import java.util.List;
+
+@Dao
+public interface ProductDAO {
+    @Insert
+    void insertProduct(Product product);
+
+    @Update
+    void updateProduct(Product product);
+
+    @Query("delete from Product where productID=:productID")
+    void deleteProduct(int productID);
+
+    @Query("Select * from Product")
+    List<Product> getAllProduct();
 }

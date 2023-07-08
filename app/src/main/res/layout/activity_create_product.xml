@@ -8,29 +8,16 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/productID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Product ID"
-        android:inputType="text"
-        android:editable="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
         android:id="@+id/productName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Product Name"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productID" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/productCategoryID"
@@ -77,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Product Material"
+        android:hint="Product Quantity"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -90,12 +77,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Product Material"
-        android:inputType="number"
+        android:hint="Product Description"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/productQuantity" />
+
+    <EditText
+        android:id="@+id/productYearOfManufacture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Product Year of Manufacture"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productDescription" />
+
 
     <EditText
         android:id="@+id/productImage"
@@ -104,11 +105,11 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Product Image"
-        android:inputType="number"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/productYearOfManufacture" />
 
     <EditText
         android:id="@+id/productStatus"
@@ -116,15 +117,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Product Image"
+        android:hint="Product status"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productStatus" />
+        app:layout_constraintTop_toBottomOf="@+id/productImage" />
 
     <Button
-        android:id="@+id/insertBtn"
+        android:id="@+id/insertProductBtn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
@@ -133,6 +134,6 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productImage" />
+        app:layout_constraintTop_toBottomOf="@+id/productStatus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
