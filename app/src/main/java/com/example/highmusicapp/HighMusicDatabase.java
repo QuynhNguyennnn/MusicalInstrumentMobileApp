@@ -15,7 +15,10 @@ import com.example.highmusicapp.Dao.ProductDAO;
 import com.example.highmusicapp.Models.Category;
 import com.example.highmusicapp.Models.Product;
 
-@Database(entities = {Product.class, Category.class}, version = 6)
+import java.util.ArrayList;
+import java.util.List;
+
+@Database(entities = {Product.class, Category.class}, version = 7)
 public abstract  class HighMusicDatabase extends RoomDatabase  {
     public abstract ProductDAO getProductDAO();
     public abstract CategoryDAO getCategoryDAO();
