@@ -15,12 +15,24 @@
         android:theme="@style/Platform.MaterialComponents.Light"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityController.ViewDetailProductActivity"
-            android:exported="false"
-            android:parentActivityName=".ActivityController.ViewProductActivity" />
+            android:name=".ActivityController.CartActivity"
+            android:exported="false" />
         <activity
             android:name=".ActivityController.ViewProductActivity"
             android:exported="false" />
+        <activity
+            android:name=".ActivityController.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityController.LogoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityController.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityController.ViewDetailProductActivity"
+            android:exported="false"
+            android:parentActivityName=".ActivityController.ViewProductActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -31,4 +43,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
+                                editor.putInt("id", account.getPeopleID());
                                 editor.putString("username", account.getUsername());
                                 editor.putString("role", String.valueOf(account.getRole()));
                                 editor.commit();

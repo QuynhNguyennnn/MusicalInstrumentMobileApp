@@ -2,17 +2,23 @@ package com.example.highmusicapp.ActivityController;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.highmusicapp.AdapterController.ProductAdapter;
+import com.example.highmusicapp.Dao.CartDAO;
+import com.example.highmusicapp.Dao.Cart_ProductDAO;
 import com.example.highmusicapp.Dao.CategoryDAO;
 import com.example.highmusicapp.Dao.ProductDAO;
 import com.example.highmusicapp.HighMusicDatabase;
+import com.example.highmusicapp.Models.Cart;
+import com.example.highmusicapp.Models.Cart_Product;
 import com.example.highmusicapp.Models.Product;
 import com.example.highmusicapp.R;
 
@@ -29,6 +35,8 @@ public class ViewDetailProductActivity extends AppCompatActivity {
 
     ImageView productImage;
     Button addToCartBtn;
+    private CartDAO cartDAO;
+    private Cart_ProductDAO cart_productDAO;
     private HighMusicDatabase highMusicDatabase;
     private ProductDAO productDAO;
     private CategoryDAO categoryDAO;
@@ -36,6 +44,9 @@ public class ViewDetailProductActivity extends AppCompatActivity {
     private ProductAdapter productAdapter;
 
     private Product product;
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public ViewDetailProductActivity() {
 
@@ -46,8 +57,13 @@ public class ViewDetailProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_detail_product);
 
+        preferences = getSharedPreferences("MIA", MODE_PRIVATE);
+        editor = preferences.edit();
+
         highMusicDatabase = HighMusicDatabase.getInstance(this);
         productDAO = highMusicDatabase.getProductDAO();
+        cartDAO = highMusicDatabase.getCartDAO();
+        cart_productDAO = highMusicDatabase.getCart_ProductDAO();
 
         // Matching UI id
         productName = (TextView) findViewById(R.id.viewDetail_productName);
@@ -81,6 +97,27 @@ public class ViewDetailProductActivity extends AppCompatActivity {
         } else {
             productStatus.setText("Status: " + "Out of stock");
         }
+
+        addToCartBtn = findViewById(R.id.viewDetail_addToCartBtn);
+
+        addToCartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cartDAO.findCartByCustomerID(preferences.getInt("id", 1))){
+                    if (cart_productDAO.findProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID())){
+                        cart_productDAO.increaseQuantity((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID());
+                    } else {
+                        Cart_Product cart_product = new Cart_Product((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID(), 1, true);
+                        cart_productDAO.addProductToCart(cart_product);
+                    }
+                }else{
+                    Cart cart = new Cart(preferences.getInt("id", 1), true);
+                    cartDAO.createCart(cart);
+                    Cart_Product cart_product = new Cart_Product((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID(), 1, true);
+                    cart_productDAO.addProductToCart(cart_product);
+                }
+            }
+        });
 
         // Loading image view with gilde
         String imageUrl = product.getImage();
