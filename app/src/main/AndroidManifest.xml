@@ -22,6 +22,15 @@
             android:name=".ActivityController.ViewProductActivity"
             android:exported="false" />
         <activity
+            android:name=".ActivityController.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityController.LogoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityController.RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
