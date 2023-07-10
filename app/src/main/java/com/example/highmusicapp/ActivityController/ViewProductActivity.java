@@ -19,8 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class ViewProductActivity extends AppCompatActivity implements ProductListener {
-    FloatingActionButton addProductFloatingActionButton;
-
     private HighMusicDatabase highMusicDatabase;
     private ProductDAO productDAO;
 
@@ -32,8 +30,6 @@ public class ViewProductActivity extends AppCompatActivity implements ProductLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_product);
-
-        addProductFloatingActionButton = (FloatingActionButton) findViewById(R.id.AddProductFloatingActionButton);
         productRecyclerView = (RecyclerView) findViewById(R.id.productRecycler);
 
         productAdapter = new ProductAdapter(this, (ProductListener) this);
@@ -42,15 +38,6 @@ public class ViewProductActivity extends AppCompatActivity implements ProductLis
 
         productRecyclerView.setAdapter(productAdapter);
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // For floating action button to switch to CreateProductActivity
-        addProductFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ViewProductActivity.this, CreateProductActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     // For refresh after execute action
@@ -79,5 +66,12 @@ public class ViewProductActivity extends AppCompatActivity implements ProductLis
     @Override
     public void onDeleteProduct(int id, int pos) {
 
+    }
+
+    @Override
+    public void onViewDetailProduct(Product product) {
+        Intent intent = new Intent(this, ViewDetailProductActivity.class);
+        intent.putExtra("productModel", product);
+        startActivity(intent);
     }
 }

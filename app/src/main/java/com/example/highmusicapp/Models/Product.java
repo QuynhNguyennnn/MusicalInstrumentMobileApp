@@ -1,13 +1,14 @@
 package com.example.highmusicapp.Models;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-@Entity
+@Entity(tableName = "Product", foreignKeys = @ForeignKey(entity = Category.class, parentColumns = "categoryID", childColumns = "categoryID"))
 public class Product implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @NotNull
