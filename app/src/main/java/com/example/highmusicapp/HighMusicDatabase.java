@@ -17,7 +17,7 @@ import com.example.highmusicapp.Models.Account;
 import com.example.highmusicapp.Models.Category;
 import com.example.highmusicapp.Models.Product;
 
-@Database(entities = {Product.class, Category.class, Account.class}, version = 9)
+@Database(entities = {Product.class, Category.class, Account.class}, version = 12)
 public abstract  class HighMusicDatabase extends RoomDatabase  {
     public abstract ProductDAO getProductDAO();
     public abstract CategoryDAO getCategoryDAO();

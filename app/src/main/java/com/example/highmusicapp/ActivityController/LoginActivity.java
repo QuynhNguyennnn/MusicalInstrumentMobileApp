@@ -41,10 +41,10 @@ public class LoginActivity extends AppCompatActivity {
         login_btn = findViewById(R.id.login_btn);
         signup_txt = findViewById(R.id.signup_txt);
 
-        if (preferences.contains("username") && preferences.contains("role")) {
-            Intent intent = new Intent(LoginActivity.this, ViewProductActivity.class);
-            startActivity(intent);
-        } else {
+//        if (preferences.contains("username") && preferences.contains("role")) {
+//            Intent intent = new Intent(LoginActivity.this, ViewProductActivity.class);
+//            startActivity(intent);
+//        } else {
             login_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,6 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-        }
+//        }
     }
 }
