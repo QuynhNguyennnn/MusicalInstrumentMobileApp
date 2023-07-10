@@ -20,6 +20,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     HighMusicDatabase highMusicDatabase;
     CategoryDAO categoryDAO;
+    ProductDAO productDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
