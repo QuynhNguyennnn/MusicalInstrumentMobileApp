@@ -25,7 +25,7 @@ import com.example.highmusicapp.Models.Customer;
 import com.example.highmusicapp.Models.People;
 import com.example.highmusicapp.Models.Product;
 
-@Database(entities = {Product.class, Category.class, Account.class, People.class, Customer.class, Cart.class, Cart_Product.class}, version = 20)
+@Database(entities = {Product.class, Category.class, Account.class, People.class, Customer.class, Cart.class, Cart_Product.class}, version = 21)
 public abstract  class HighMusicDatabase extends RoomDatabase  {
     public abstract ProductDAO getProductDAO();
     public abstract CategoryDAO getCategoryDAO();

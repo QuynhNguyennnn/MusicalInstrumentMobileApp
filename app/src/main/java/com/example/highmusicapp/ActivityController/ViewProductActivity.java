@@ -5,8 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.highmusicapp.AdapterController.ProductAdapter;
 import com.example.highmusicapp.AdapterController.ProductListener;
@@ -24,6 +28,8 @@ public class ViewProductActivity extends AppCompatActivity implements ProductLis
 
     private ProductAdapter productAdapter;
 
+    private SharedPreferences preferences;
+
     RecyclerView productRecyclerView;
 
     @Override
@@ -31,6 +37,7 @@ public class ViewProductActivity extends AppCompatActivity implements ProductLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_product);
         productRecyclerView = (RecyclerView) findViewById(R.id.productRecycler);
+        preferences = getSharedPreferences("MIA", MODE_PRIVATE);
 
         productAdapter = new ProductAdapter(this, (ProductListener) this);
         highMusicDatabase = HighMusicDatabase.getInstance(this);
@@ -73,5 +80,22 @@ public class ViewProductActivity extends AppCompatActivity implements ProductLis
         Intent intent = new Intent(this, ViewDetailProductActivity.class);
         intent.putExtra("productModel", product);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menuCart);
+        View actionView = menuItem.getActionView();
+
+        TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+
+        txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
+        if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+        {
+            txtQuantityCart.setVisibility(View.GONE);
+        }
+        return true;
     }
 }

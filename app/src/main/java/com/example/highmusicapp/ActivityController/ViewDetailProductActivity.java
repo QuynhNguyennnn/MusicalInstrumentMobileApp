@@ -2,13 +2,18 @@ package com.example.highmusicapp.ActivityController;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.highmusicapp.AdapterController.ProductAdapter;
@@ -32,21 +37,20 @@ public class ViewDetailProductActivity extends AppCompatActivity {
             productYearOfManufacture,
             productDescription,
             productStatus;
-
     ImageView productImage;
     Button addToCartBtn;
+    Intent intent;
     private CartDAO cartDAO;
     private Cart_ProductDAO cart_productDAO;
     private HighMusicDatabase highMusicDatabase;
     private ProductDAO productDAO;
     private CategoryDAO categoryDAO;
-
     private ProductAdapter productAdapter;
-
     private Product product;
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    private Context context = this;
 
     public ViewDetailProductActivity() {
 
@@ -116,6 +120,12 @@ public class ViewDetailProductActivity extends AppCompatActivity {
                     Cart_Product cart_product = new Cart_Product((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID(), 1, true);
                     cart_productDAO.addProductToCart(cart_product);
                 }
+                Toast.makeText(context, "Add to cart successful", Toast.LENGTH_SHORT).show();
+                intent = new Intent(context, ViewProductActivity.class);
+                editor.putString("cartQuantity",String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
+                editor.commit();
+                invalidateOptionsMenu();
+                startActivity(intent);
             }
         });
 
@@ -127,5 +137,21 @@ public class ViewDetailProductActivity extends AppCompatActivity {
                 .centerCrop()
                 .placeholder(R.drawable.placeholderimage)
                 .into(productImage);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menuCart);
+        View actionView = menuItem.getActionView();
+
+        TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+
+        txtQuantityCart.setText(String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
+        if (cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1))) == 0){
+            txtQuantityCart.setVisibility(View.GONE);
+        }
+        return true;
     }
 }

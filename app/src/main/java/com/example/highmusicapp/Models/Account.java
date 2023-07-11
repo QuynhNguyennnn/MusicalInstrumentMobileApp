@@ -15,7 +15,7 @@ public class Account {
     private int PeopleID;
 
     @ColumnInfo(name = "Role")
-    private int Role;
+    private Role Role;
 
     @ColumnInfo(name = "Email")
     private String Email;
@@ -29,7 +29,7 @@ public class Account {
     @ColumnInfo(name = "Status")
     private Boolean Status;
 
-    public Account(int peopleID, int role, String email, String username, String password, Boolean status) {
+    public Account(int peopleID, Role role, String email, String username, String password, Boolean status) {
         PeopleID = peopleID;
         Role = role;
         Email = email;
@@ -54,11 +54,11 @@ public class Account {
         PeopleID = peopleID;
     }
 
-    public int getRole() {
+    public com.example.highmusicapp.Models.Role getRole() {
         return Role;
     }
 
-    public void setRole(int role) {
+    public void setRole(com.example.highmusicapp.Models.Role role) {
         Role = role;
     }
 

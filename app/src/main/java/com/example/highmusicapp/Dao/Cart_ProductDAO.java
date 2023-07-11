@@ -25,4 +25,7 @@ public interface Cart_ProductDAO {
 
     @Query("DELETE FROM cart_product WHERE cartID = :cartID AND productID = :productID")
     void deleteProductToCart(int cartID, int productID);
+
+    @Query("SELECT count(cartID) FROM Cart_Product WHERE cartID = :cartID")
+    int countProductInCart(int cartID);
 }
