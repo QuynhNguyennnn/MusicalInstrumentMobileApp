@@ -9,7 +9,6 @@ public class Account {
     public Account() {}
     @PrimaryKey(autoGenerate = true)
     private int ID;
-
     @ColumnInfo(name = "PeopleID")
     private int PeopleID;
 
@@ -27,6 +26,15 @@ public class Account {
 
     @ColumnInfo(name = "Status")
     private Boolean Status;
+
+    public Account(int peopleID, int role, String email, String username, String password, Boolean status) {
+        PeopleID = peopleID;
+        Role = role;
+        Email = email;
+        Username = username;
+        Password = password;
+        Status = status;
+    }
 
     public int getID() {
         return ID;
