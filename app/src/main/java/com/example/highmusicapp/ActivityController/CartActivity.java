@@ -4,23 +4,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.highmusicapp.AdapterController.CartAdapter;
 import com.example.highmusicapp.AdapterController.CartListener;
-import com.example.highmusicapp.AdapterController.ProductAdapter;
-import com.example.highmusicapp.AdapterController.ProductListener;
+import com.example.highmusicapp.Dao.BillDAO;
+import com.example.highmusicapp.Dao.Bill_ProductDAO;
 import com.example.highmusicapp.Dao.CartDAO;
 import com.example.highmusicapp.Dao.Cart_ProductDAO;
-import com.example.highmusicapp.Dao.CategoryDAO;
-import com.example.highmusicapp.Dao.ProductDAO;
 import com.example.highmusicapp.HighMusicDatabase;
+import com.example.highmusicapp.Models.Bill;
+import com.example.highmusicapp.Models.Bill_Product;
 import com.example.highmusicapp.Models.Product;
 import com.example.highmusicapp.R;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity implements CartListener{
@@ -31,8 +39,12 @@ public class CartActivity extends AppCompatActivity implements CartListener{
     private CartAdapter cartAdapter;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    private BillDAO billDAO;
+    private Bill_ProductDAO billProductDAO;
+    private Context context  = this;
     TextView txtTotal;
     Button btnPay;
+    Intent intent;
     RecyclerView cartRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +58,8 @@ public class CartActivity extends AppCompatActivity implements CartListener{
         editor = preferences.edit();
         highMusicDatabase = HighMusicDatabase.getInstance(this);
         cartDAO = highMusicDatabase.getCartDAO();
+        billDAO = highMusicDatabase.getBillDAO();
+        billProductDAO = highMusicDatabase.getBillProductDAO();
         cart_productDAO = highMusicDatabase.getCart_ProductDAO();
         cartRecyclerView = (RecyclerView) findViewById(R.id.cartRecycler);
         cartAdapter = new CartAdapter(this,(int) cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)),(CartListener) this);
@@ -53,6 +67,33 @@ public class CartActivity extends AppCompatActivity implements CartListener{
 
         cartRecyclerView.setAdapter(cartAdapter);
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        btnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1))) != 0) {
+                    LocalDate date = LocalDate.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    String formattedDate = date.format(formatter);
+
+                    Bill bill = new Bill(preferences.getInt("id", 1), formattedDate, total,true);
+                    long billID = billDAO.createBill(bill);
+                    List<Product> productList = cartDAO.getProductsFromCart(preferences.getInt("id", 1));
+                    for(Product product: productList){
+                        Bill_Product billProduct = new Bill_Product((int)billID,product.getProductID(),product.getQuantity(),true);
+                        billProductDAO.insertBill(billProduct);
+                        cart_productDAO.pay((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id",1)), product.getProductID());
+                    }
+                    Toast.makeText(context, "Pay successful", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(context, ViewProductActivity.class);
+                    editor.putString("cartQuantity", "0");
+                    editor.commit();
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "Cart is empty!!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -76,6 +117,9 @@ public class CartActivity extends AppCompatActivity implements CartListener{
     @Override
     public void onRemoveProduct(int cartID, int productID) {
         cart_productDAO.deleteProductToCart(cartID, productID);
+        editor.putString("cartQuantity",String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
+        editor.commit();
+        invalidateOptionsMenu();
         fetchCartData();
     }
 
@@ -94,7 +138,35 @@ public class CartActivity extends AppCompatActivity implements CartListener{
             cart_productDAO.decreaseQuantity(cartID, productID);
         } else {
             cart_productDAO.deleteProductToCart(cartID, productID);
+            editor.putString("cartQuantity",String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
+            editor.commit();
+            invalidateOptionsMenu();
         }
         fetchCartData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menuCart);
+        View actionView = menuItem.getActionView();
+
+        TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+
+        txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
+        if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+        {
+            txtQuantityCart.setVisibility(View.GONE);
+        }
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CartActivity.class);
+                startActivity(intent);
+            }
+        });
+        return true;
     }
 }

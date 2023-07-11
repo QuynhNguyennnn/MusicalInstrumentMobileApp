@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.highmusicapp.ActivityController.BillActivity;
 import com.example.highmusicapp.ActivityController.CartActivity;
 import com.example.highmusicapp.ActivityController.LoginActivity;
 import com.example.highmusicapp.ActivityController.LogoutActivity;
@@ -35,14 +36,20 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     Intent intent;
     Button button;
-
+    HighMusicDatabase highMusicDatabase;
+    CategoryDAO categoryDAO;
+    PeopleDAO peopleDAO;
+    CustomerDAO customerDAO;
+    AccountDAO accountDAO;
+    ProductDAO productDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        intent = new Intent(this, LogoutActivity.class);
+        intent = new Intent(this, BillActivity.class);
         button = findViewById(R.id.goToProductList);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

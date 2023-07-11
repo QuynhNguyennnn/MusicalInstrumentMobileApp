@@ -1,6 +1,7 @@
 package com.example.highmusicapp.ActivityController;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,74 +14,63 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.highmusicapp.AdapterController.ProductAdapter;
-import com.example.highmusicapp.AdapterController.ProductListener;
-import com.example.highmusicapp.Dao.ProductDAO;
+import com.example.highmusicapp.AdapterController.BillAdapter;
+import com.example.highmusicapp.AdapterController.BillListener;
+import com.example.highmusicapp.Dao.BillDAO;
 import com.example.highmusicapp.HighMusicDatabase;
+import com.example.highmusicapp.Models.Bill;
 import com.example.highmusicapp.Models.Product;
 import com.example.highmusicapp.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class ViewProductActivity extends AppCompatActivity implements ProductListener {
+public class BillActivity extends AppCompatActivity implements BillListener {
+
     private HighMusicDatabase highMusicDatabase;
-    private ProductDAO productDAO;
-
-    private ProductAdapter productAdapter;
-
+    private BillDAO billDAO;
+    private BillAdapter billAdapter;
     private SharedPreferences preferences;
     private Context context = this;
 
-    RecyclerView productRecyclerView;
-
+    RecyclerView billRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_product);
-        productRecyclerView = (RecyclerView) findViewById(R.id.productRecycler);
+        setContentView(R.layout.activity_bill);
+
+        billRecyclerView = (RecyclerView) findViewById(R.id.billRecyclerView);
         preferences = getSharedPreferences("MIA", MODE_PRIVATE);
-
-        productAdapter = new ProductAdapter(this, (ProductListener) this);
+        billAdapter = new BillAdapter(this, (BillListener) this);
         highMusicDatabase = HighMusicDatabase.getInstance(this);
-        productDAO = highMusicDatabase.getProductDAO();
+        billDAO = highMusicDatabase.getBillDAO();
 
-        productRecyclerView.setAdapter(productAdapter);
-        productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        billRecyclerView.setAdapter(billAdapter);
+        billRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        billRecyclerView.addItemDecoration(itemDecoration);
     }
 
-    // For refresh after execute action
     @Override
     protected void onResume() {
         super.onResume();
         fetchProductData();
     }
 
-    // For Working with Database
     private void fetchProductData() {
-        productAdapter.clearProduct();
-        List<Product> productList = productDAO.getAllProduct();
+        billAdapter.clearBill();
+        List<Bill> billList = billDAO.getAllBillByCustomerID(preferences.getInt("id",1));
 
-        for (int i = 0; i < productList.size(); i++) {
-            Product product = productList.get(i);
-            productAdapter.addProduct(product);
+        for (int i = 0; i < billList.size(); i++) {
+            Bill bill = billList.get(i);
+            billAdapter.addBill(bill);
         }
     }
 
     @Override
-    public void onUpdateProduct(Product product) {
-
-    }
-
-    @Override
-    public void onDeleteProduct(int id, int pos) {
-
-    }
-
-    @Override
-    public void onViewDetailProduct(Product product) {
-        Intent intent = new Intent(this, ViewDetailProductActivity.class);
-        intent.putExtra("productModel", product);
+    public void onViewBillDetail(int billID){
+        Intent intent = new Intent(this, ViewBillDetailActivity.class);
+        intent.putExtra("billID", billID);
         startActivity(intent);
     }
 

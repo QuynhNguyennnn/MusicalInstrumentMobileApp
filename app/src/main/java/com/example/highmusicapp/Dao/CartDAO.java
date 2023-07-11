@@ -13,18 +13,18 @@ import java.util.List;
 @Dao
 public interface CartDAO {
     @Query("SELECT Product.productID, Product.price, Product.categoryID, Product.productName, Product.material, Cart_Product.quantity, Product.yearOfManufacture, Product.description, Product.image, Product.status " +
-            "FROM Cart_Product " +
-            "INNER JOIN Product ON Cart_Product.productID = Product.productID " +
-            "INNER JOIN Cart ON Cart_Product.cartID = Cart.cartID " +
-            "WHERE customerID = :customerID AND Cart.status = 1")
+            "FROM cart_product " +
+            "INNER JOIN product ON cart_product.productID = product.productID " +
+            "INNER JOIN cart ON cart_product.cartID = cart.cartID " +
+            "WHERE customerID = :customerID AND cart_product.status = 1")
     List<Product> getProductsFromCart(int customerID);
 
     @Insert
     long createCart(Cart cart);
 
-    @Query("SELECT cartID FROM Cart WHERE customerID = :customerID")
+    @Query("SELECT cartID FROM Cart WHERE customerID = :customerID AND status = 1")
     long getCartIDByCustomerID(int customerID);
 
-    @Query("SELECT * FROM Cart WHERE customerID = :customerID")
+    @Query("SELECT * FROM Cart WHERE customerID = :customerID AND status = 1")
     boolean findCartByCustomerID(int customerID);
 }

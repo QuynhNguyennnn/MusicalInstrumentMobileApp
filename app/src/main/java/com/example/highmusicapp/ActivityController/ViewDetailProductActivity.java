@@ -152,6 +152,14 @@ public class ViewDetailProductActivity extends AppCompatActivity {
         if (cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1))) == 0){
             txtQuantityCart.setVisibility(View.GONE);
         }
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CartActivity.class);
+                startActivity(intent);
+            }
+        });
         return true;
     }
 }
