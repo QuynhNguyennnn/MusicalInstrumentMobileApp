@@ -3,6 +3,7 @@ package com.example.highmusicapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.highmusicapp.ActivityController.LoginActivity;
@@ -24,11 +25,17 @@ public class MainActivity extends AppCompatActivity {
     CategoryDAO categoryDAO;
     ProductDAO productDAO;
     AccountDAO accountDAO;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = getSharedPreferences("MIA", MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.clear();
+        editor.commit();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }

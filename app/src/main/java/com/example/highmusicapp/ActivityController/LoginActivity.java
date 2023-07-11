@@ -1,6 +1,7 @@
 package com.example.highmusicapp.ActivityController;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,8 @@ import com.example.highmusicapp.HighMusicDatabase;
 import com.example.highmusicapp.Models.Account;
 import com.example.highmusicapp.R;
 
+import jp.wasabeef.blurry.Blurry;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText username_login;
@@ -26,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private HighMusicDatabase highMusicDatabase;
     private AccountDAO accountDAO;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,10 @@ public class LoginActivity extends AppCompatActivity {
         login_btn = findViewById(R.id.login_btn);
         signup_txt = findViewById(R.id.signup_txt);
 
-//        if (preferences.contains("username") && preferences.contains("role")) {
-//            Intent intent = new Intent(LoginActivity.this, ViewProductActivity.class);
-//            startActivity(intent);
-//        } else {
+        if (preferences.contains("username") && preferences.contains("role")) {
+            Intent intent = new Intent(LoginActivity.this, ViewProductActivity.class);
+            startActivity(intent);
+        } else {
             login_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,6 +91,6 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-//        }
+        }
     }
 }
