@@ -32,7 +32,7 @@ public class Account {
 
     public Account() {}
 
-    public Account(int peopleID, int role, String email, String username, String password, Boolean status) {
+    public Account(int peopleID, Role role, String email, String username, String password, Boolean status) {
         PeopleID = peopleID;
         Role = role;
         Email = email;
