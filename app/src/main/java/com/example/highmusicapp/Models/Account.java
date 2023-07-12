@@ -11,7 +11,6 @@ public class Account {
 
     @PrimaryKey(autoGenerate = true)
     private int ID;
-
     @ColumnInfo(name = "PeopleID")
     private int PeopleID;
 
