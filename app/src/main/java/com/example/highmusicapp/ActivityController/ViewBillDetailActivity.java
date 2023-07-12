@@ -13,75 +13,55 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.highmusicapp.AdapterController.ProductAdapter;
-import com.example.highmusicapp.AdapterController.ProductListener;
-import com.example.highmusicapp.Dao.ProductDAO;
+import com.example.highmusicapp.AdapterController.BillDetailAdapter;
+import com.example.highmusicapp.Dao.Bill_ProductDAO;
 import com.example.highmusicapp.HighMusicDatabase;
+import com.example.highmusicapp.Models.Bill_Product;
 import com.example.highmusicapp.Models.Product;
 import com.example.highmusicapp.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class ViewProductActivity extends AppCompatActivity implements ProductListener {
+public class ViewBillDetailActivity extends AppCompatActivity {
     private HighMusicDatabase highMusicDatabase;
-    private ProductDAO productDAO;
-
-    private ProductAdapter productAdapter;
-
+    private Bill_ProductDAO billProductDAO;
+    private BillDetailAdapter billDetailAdapter;
     private SharedPreferences preferences;
+    int billID;
     private Context context = this;
-
-    RecyclerView productRecyclerView;
+    RecyclerView billDetailRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_product);
-        productRecyclerView = (RecyclerView) findViewById(R.id.productRecycler);
+        setContentView(R.layout.activity_view_bill_detail);
+        billDetailRecyclerView = (RecyclerView) findViewById(R.id.billDetailRecycler);
         preferences = getSharedPreferences("MIA", MODE_PRIVATE);
 
-        productAdapter = new ProductAdapter(this, (ProductListener) this);
+        billDetailAdapter = new BillDetailAdapter(this);
         highMusicDatabase = HighMusicDatabase.getInstance(this);
-        productDAO = highMusicDatabase.getProductDAO();
+        billProductDAO = highMusicDatabase.getBillProductDAO();
 
-        productRecyclerView.setAdapter(productAdapter);
-        productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+         billID = (int) getIntent().getSerializableExtra("billID");
+
+        billDetailRecyclerView.setAdapter(billDetailAdapter);
+        billDetailRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    // For refresh after execute action
     @Override
-    protected void onResume() {
+    protected void onResume(){
         super.onResume();
-        fetchProductData();
+        fetchBillDetailData();
     }
 
-    // For Working with Database
-    private void fetchProductData() {
-        productAdapter.clearProduct();
-        List<Product> productList = productDAO.getAllProduct();
+    private void fetchBillDetailData() {
+        billDetailAdapter.clearBillDetail();
+        List<Bill_Product> list = billProductDAO.getAllProductFromBill(billID);
 
-        for (int i = 0; i < productList.size(); i++) {
-            Product product = productList.get(i);
-            productAdapter.addProduct(product);
+        for (int i = 0; i < list.size(); i++) {
+            Bill_Product billProduct = list.get(i);
+            billDetailAdapter.addBillDetail(billProduct);
         }
-    }
-
-    @Override
-    public void onUpdateProduct(Product product) {
-
-    }
-
-    @Override
-    public void onDeleteProduct(int id, int pos) {
-
-    }
-
-    @Override
-    public void onViewDetailProduct(Product product) {
-        Intent intent = new Intent(this, ViewDetailProductActivity.class);
-        intent.putExtra("productModel", product);
-        startActivity(intent);
     }
 
     @Override

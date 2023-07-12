@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.highmusicapp.Dao.AccountDAO;
+import com.example.highmusicapp.Dao.CartDAO;
+import com.example.highmusicapp.Dao.Cart_ProductDAO;
 import com.example.highmusicapp.HighMusicDatabase;
 import com.example.highmusicapp.Models.Account;
 import com.example.highmusicapp.R;
@@ -29,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private HighMusicDatabase highMusicDatabase;
     private AccountDAO accountDAO;
+    private Cart_ProductDAO cart_productDAO;
+    private CartDAO cartDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                     String password = password_login.getText().toString().trim();
                     highMusicDatabase = HighMusicDatabase.getInstance(LoginActivity.this);
                     accountDAO = highMusicDatabase.getAccountDAO();
+                    cart_productDAO = highMusicDatabase.getCart_ProductDAO();
+                    cartDAO = highMusicDatabase.getCartDAO();
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -73,8 +79,10 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
+                                editor.putInt("id", account.getPeopleID());
                                 editor.putString("username", account.getUsername());
                                 editor.putString("role", String.valueOf(account.getRole()));
+                                editor.putString("cartQuantity",String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(account.getPeopleID()))));
                                 editor.commit();
                                 Intent intent = new Intent(LoginActivity.this, ViewProductActivity.class);
                                 startActivity(intent);

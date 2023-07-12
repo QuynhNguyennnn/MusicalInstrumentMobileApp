@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.example.highmusicapp.Dao.AccountDAO;
 import com.example.highmusicapp.HighMusicDatabase;
 import com.example.highmusicapp.Models.Account;
+import com.example.highmusicapp.Models.Role;
 import com.example.highmusicapp.R;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -87,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.setEmail(email);
                                     account.setUsername(username);
                                     account.setPassword(password);
-                                    account.setRole(2);
+                                    account.setRole(Role.CUSTOMER);
                                     account.setStatus(true);
                                     accountDAO.register(account);
                                     runOnUiThread(new Runnable() {
