@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/txtPurchaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:text="PurchaseDate: "/>
+
+            <TextView
+                android:id="@+id/txtTotalBill"
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:text="Total: "/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnViewBillDetail"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:background="@color/green1"
+            android:text="Detail"
+            android:textColor="@color/white"
+            android:layout_marginTop="28dp"/>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

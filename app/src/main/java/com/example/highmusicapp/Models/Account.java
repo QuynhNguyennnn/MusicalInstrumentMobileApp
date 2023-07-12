@@ -2,19 +2,20 @@ package com.example.highmusicapp.Models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "Account", foreignKeys = @ForeignKey(entity = People.class, parentColumns = "peopleID", childColumns = "PeopleID"))
 public class Account {
-    public Account() {}
+
+
     @PrimaryKey(autoGenerate = true)
     private int ID;
-
     @ColumnInfo(name = "PeopleID")
     private int PeopleID;
 
     @ColumnInfo(name = "Role")
-    private int Role;
+    private Role Role;
 
     @ColumnInfo(name = "Email")
     private String Email;
@@ -27,6 +28,17 @@ public class Account {
 
     @ColumnInfo(name = "Status")
     private Boolean Status;
+
+    public Account() {}
+
+    public Account(int peopleID, Role role, String email, String username, String password, Boolean status) {
+        PeopleID = peopleID;
+        Role = role;
+        Email = email;
+        Username = username;
+        Password = password;
+        Status = status;
+    }
 
     public int getID() {
         return ID;
@@ -44,11 +56,11 @@ public class Account {
         PeopleID = peopleID;
     }
 
-    public int getRole() {
+    public com.example.highmusicapp.Models.Role getRole() {
         return Role;
     }
 
-    public void setRole(int role) {
+    public void setRole(com.example.highmusicapp.Models.Role role) {
         Role = role;
     }
 
