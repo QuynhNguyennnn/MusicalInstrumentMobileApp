@@ -54,16 +54,8 @@ public class MainActivity extends AppCompatActivity {
         editor.clear();
         editor.commit();
 
-        intent = new Intent(this, BillActivity.class);
-        button = findViewById(R.id.goToProductList);
-
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intent);
-            }
-        });
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
