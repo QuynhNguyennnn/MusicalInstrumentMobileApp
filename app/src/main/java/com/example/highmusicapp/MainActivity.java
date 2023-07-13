@@ -16,6 +16,7 @@ import com.example.highmusicapp.ActivityController.BillActivity;
 import com.example.highmusicapp.ActivityController.CartActivity;
 import com.example.highmusicapp.ActivityController.LoginActivity;
 import com.example.highmusicapp.ActivityController.LogoutActivity;
+import com.example.highmusicapp.ActivityController.RegisterActivity;
 import com.example.highmusicapp.ActivityController.ViewProductActivity;
 import com.example.highmusicapp.AdapterController.ProductAdapter;
 import com.example.highmusicapp.AdapterController.ProductListener;
