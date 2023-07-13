@@ -12,10 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.highmusicapp.ActivityController.AddPeopleActivity;
 import com.example.highmusicapp.ActivityController.BillActivity;
 import com.example.highmusicapp.ActivityController.CartActivity;
 import com.example.highmusicapp.ActivityController.LoginActivity;
 import com.example.highmusicapp.ActivityController.LogoutActivity;
+import com.example.highmusicapp.ActivityController.RegisterActivity;
 import com.example.highmusicapp.ActivityController.ViewProductActivity;
 import com.example.highmusicapp.AdapterController.ProductAdapter;
 import com.example.highmusicapp.AdapterController.ProductListener;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         editor.clear();
         editor.commit();
 
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, AddPeopleActivity.class);
         startActivity(intent);
     }
 
