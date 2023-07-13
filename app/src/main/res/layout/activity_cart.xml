@@ -41,7 +41,7 @@
             android:id="@+id/txtTotal"
             android:layout_width="233dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:text="Total: "
             android:textSize="25sp" />
 
