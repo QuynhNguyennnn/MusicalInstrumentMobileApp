@@ -91,7 +91,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/already_txt"
+                android:id="@+id/already_txt_1"
                 android:text="Already have an account? Sign in"
                 android:textAlignment="textEnd"
                 android:textColor="@color/green1"

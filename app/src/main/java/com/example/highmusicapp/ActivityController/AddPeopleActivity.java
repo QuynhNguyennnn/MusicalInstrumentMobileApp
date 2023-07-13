@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.highmusicapp.Models.People;
@@ -16,6 +17,7 @@ public class AddPeopleActivity extends AppCompatActivity {
     EditText fullName, phoneNumber, address;
     String txt_fullName,txt_phone, txt_address;
     Button btnNext;
+    private TextView already_txt_1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class AddPeopleActivity extends AppCompatActivity {
         fullName = findViewById(R.id.fullNameInput);
         phoneNumber = findViewById(R.id.phoneInput);
         address = findViewById(R.id.addressInput);
+        already_txt_1 = findViewById(R.id.already_txt_1);
 
 
         btnNext = findViewById(R.id.next_btn);
@@ -44,6 +47,14 @@ public class AddPeopleActivity extends AppCompatActivity {
                     intent.putExtra("peopleModel", people);
                     startActivity(intent);
                 }
+            }
+        });
+
+        already_txt_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddPeopleActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
     }
