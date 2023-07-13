@@ -1,6 +1,7 @@
 package com.example.highmusicapp.ActivityController;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,8 @@ import com.example.highmusicapp.HighMusicDatabase;
 import com.example.highmusicapp.Models.Account;
 import com.example.highmusicapp.R;
 
+import jp.wasabeef.blurry.Blurry;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText username_login;
@@ -30,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private AccountDAO accountDAO;
     private Cart_ProductDAO cart_productDAO;
     private CartDAO cartDAO;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

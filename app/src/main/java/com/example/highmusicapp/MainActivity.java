@@ -3,6 +3,7 @@ package com.example.highmusicapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,10 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.highmusicapp.ActivityController.AddPeopleActivity;
 import com.example.highmusicapp.ActivityController.BillActivity;
 import com.example.highmusicapp.ActivityController.CartActivity;
 import com.example.highmusicapp.ActivityController.LoginActivity;
 import com.example.highmusicapp.ActivityController.LogoutActivity;
+import com.example.highmusicapp.ActivityController.RegisterActivity;
 import com.example.highmusicapp.ActivityController.ViewProductActivity;
 import com.example.highmusicapp.AdapterController.ProductAdapter;
 import com.example.highmusicapp.AdapterController.ProductListener;
@@ -38,25 +41,23 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     HighMusicDatabase highMusicDatabase;
     CategoryDAO categoryDAO;
+    ProductDAO productDAO;
+    AccountDAO accountDAO;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
     PeopleDAO peopleDAO;
     CustomerDAO customerDAO;
-    AccountDAO accountDAO;
-    ProductDAO productDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = getSharedPreferences("MIA", MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.clear();
+        editor.commit();
 
-        intent = new Intent(this, BillActivity.class);
-        button = findViewById(R.id.goToProductList);
-
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intent);
-            }
-        });
+        Intent intent = new Intent(this, AddPeopleActivity.class);
+        startActivity(intent);
     }
 
     @Override
