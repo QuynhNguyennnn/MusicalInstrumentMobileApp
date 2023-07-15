@@ -1,7 +1,17 @@
 package com.example.highmusicapp.ActivityController;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +26,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.highmusicapp.ActivityFragments.BillFragment;
+import com.example.highmusicapp.ActivityFragments.ChatFragment;
+import com.example.highmusicapp.ActivityFragments.HomeFragment;
+import com.example.highmusicapp.ActivityFragments.LocationFragment;
+import com.example.highmusicapp.ActivityFragments.LoginFragment;
+import com.example.highmusicapp.ActivityFragments.LogoutFragment;
 import com.example.highmusicapp.AdapterController.ProductAdapter;
 import com.example.highmusicapp.Dao.CartDAO;
 import com.example.highmusicapp.Dao.Cart_ProductDAO;
@@ -26,8 +42,9 @@ import com.example.highmusicapp.Models.Cart;
 import com.example.highmusicapp.Models.Cart_Product;
 import com.example.highmusicapp.Models.Product;
 import com.example.highmusicapp.R;
+import com.google.android.material.navigation.NavigationView;
 
-public class ViewDetailProductActivity extends AppCompatActivity {
+public class ViewDetailProductActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private TextView
             productName,
             productCategoryID,
@@ -47,7 +64,9 @@ public class ViewDetailProductActivity extends AppCompatActivity {
     private CategoryDAO categoryDAO;
     private ProductAdapter productAdapter;
     private Product product;
-
+    Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private Context context = this;
@@ -56,6 +75,7 @@ public class ViewDetailProductActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +88,18 @@ public class ViewDetailProductActivity extends AppCompatActivity {
         productDAO = highMusicDatabase.getProductDAO();
         cartDAO = highMusicDatabase.getCartDAO();
         cart_productDAO = highMusicDatabase.getCart_ProductDAO();
+
+        //menubar
+        toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        /*drawerLayout = findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_nav, R.string.close_nav);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();*/
+
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         // Matching UI id
         productName = (TextView) findViewById(R.id.viewDetail_productName);
@@ -160,6 +192,44 @@ public class ViewDetailProductActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        return true;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        if ( id == R.id.home_nav) {
+            replaceFragment(new HomeFragment());
+        } else if (id == R.id.chat_nav) {
+            replaceFragment(new ChatFragment());
+        } else if (id == R.id.location_nav) {
+            replaceFragment(new LocationFragment());
+        } else if (id == R.id.bill_nav) {
+            replaceFragment(new BillFragment());
+        } else if (id == R.id.logout_nav) {
+            replaceFragment(new LogoutFragment());
+        } /*else if (id == R.id.login_nav) {
+            replaceFragment(new LoginFragment());
+        }*/
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 }

@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ActivityController.ViewBillDetailActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/greenpastel"
+            app:navigationIcon="@drawable/icon_menu"
+            android:id="@+id/toolbarBD"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:elevation="4dp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragment_container"
+            />
+    </LinearLayout>
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"

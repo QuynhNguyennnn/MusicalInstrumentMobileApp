@@ -1,13 +1,22 @@
 package com.example.highmusicapp.ActivityController;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -15,6 +24,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.highmusicapp.ActivityFragments.BillFragment;
+import com.example.highmusicapp.ActivityFragments.ChatFragment;
+import com.example.highmusicapp.ActivityFragments.HomeFragment;
+import com.example.highmusicapp.ActivityFragments.LocationFragment;
+import com.example.highmusicapp.ActivityFragments.LoginFragment;
+import com.example.highmusicapp.ActivityFragments.LogoutFragment;
 import com.example.highmusicapp.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -28,6 +43,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -37,12 +53,16 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends AppCompatActivity {
+public class MapsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     Spinner spinner;
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient fusedLocationProviderClient;
+    Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +90,57 @@ public class MapsActivity extends AppCompatActivity {
                 }).check();
 
         addControls();
+
+        toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbarMap);
+        setSupportActionBar(toolbar);
+
+        /*drawerLayout = findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_nav, R.string.close_nav);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();*/
+
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        if ( id == R.id.home_nav) {
+            replaceFragment(new HomeFragment());
+        } else if (id == R.id.chat_nav) {
+            replaceFragment(new ChatFragment());
+        } else if (id == R.id.location_nav) {
+            replaceFragment(new LocationFragment());
+        } else if (id == R.id.bill_nav) {
+            replaceFragment(new BillFragment());
+        } else if (id == R.id.logout_nav) {
+            replaceFragment(new LogoutFragment());
+        } /*else if (id == R.id.login_nav) {
+            replaceFragment(new LoginFragment());
+        }*/
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private void getCurrentLocation() {

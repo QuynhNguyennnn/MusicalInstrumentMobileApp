@@ -1,4 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/home_nav"
+            android:icon="@drawable/icon_home"
+            android:title="Home"/>
+        <item android:id="@+id/chat_nav"
+            android:icon="@drawable/icon_chat"
+            android:title="Chat with us"/>
+        <item android:id="@+id/location_nav"
+            android:icon="@drawable/icon_location"
+            android:title="Our Location"/>
+        <item android:id="@+id/bill_nav"
+            android:icon="@drawable/icon_bill"
+            android:title="Your bill history"/>
+    </group>
+        <item android:title="Communicate">
+            <menu>
+                <group android:checkableBehavior="single">
+                <item android:id="@+id/logout_nav"
+                    android:icon="@drawable/icon_logout"
+                    android:title="Logout"/>
+                <!--<item android:id="@+id/login_nav"
+                android:icon="@drawable/icon_login"
+                android:title="Login"/>-->
+            </group>
+            </menu>
+        </item>
 
 </menu>
