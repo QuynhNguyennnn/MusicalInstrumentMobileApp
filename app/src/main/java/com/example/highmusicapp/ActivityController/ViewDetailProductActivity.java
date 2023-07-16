@@ -1,5 +1,6 @@
 package com.example.highmusicapp.ActivityController;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -142,24 +143,68 @@ public class ViewDetailProductActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
+//        MenuItem item = findViewById(R.id.menuCart);
 
-        MenuItem menuItem = menu.findItem(R.id.menuCart);
-        View actionView = menuItem.getActionView();
 
-        TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
-
-        txtQuantityCart.setText(String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
-        if (cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1))) == 0){
-            txtQuantityCart.setVisibility(View.GONE);
+        if (preferences.contains("username")) {
+            MenuItem menuItem = menu.findItem(R.id.login_nav);
+            menuItem.setVisible(false);
+        } else {
+            MenuItem menuItem = menu.findItem(R.id.logout_nav);
+            menuItem.setVisible(false);
         }
-
-        actionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CartActivity.class);
-                startActivity(intent);
-            }
-        });
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.home_nav) {
+            Intent intent = new Intent(ViewDetailProductActivity.this, ViewProductActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.chat_nav) {
+            Intent intent = new Intent(ViewDetailProductActivity.this, ViewProductActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.location_nav) {
+            Intent intent = new Intent(ViewDetailProductActivity.this, MapsActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.bill_nav) {
+            Intent intent = new Intent(ViewDetailProductActivity.this, BillActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.menuCart) {
+            View actionView = item.getActionView();
+
+            TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+
+            txtQuantityCart.setText(String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
+            if (cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1))) == 0){
+                txtQuantityCart.setVisibility(View.GONE);
+            }
+
+            actionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, CartActivity.class);
+                    startActivity(intent);
+                }
+            });
+            return true;
+        } else if (item.getItemId() == R.id.logout_nav) {
+            preferences = getSharedPreferences("MIA", MODE_PRIVATE);
+            editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(ViewDetailProductActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.login_nav) {
+            Intent intent = new Intent(ViewDetailProductActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

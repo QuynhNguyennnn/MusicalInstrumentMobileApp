@@ -1,5 +1,6 @@
 package com.example.highmusicapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,6 +18,7 @@ import com.example.highmusicapp.ActivityController.BillActivity;
 import com.example.highmusicapp.ActivityController.CartActivity;
 import com.example.highmusicapp.ActivityController.LoginActivity;
 import com.example.highmusicapp.ActivityController.LogoutActivity;
+import com.example.highmusicapp.ActivityController.MapsActivity;
 import com.example.highmusicapp.ActivityController.RegisterActivity;
 import com.example.highmusicapp.ActivityController.ViewProductActivity;
 import com.example.highmusicapp.AdapterController.ProductAdapter;
@@ -56,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         editor.clear();
         editor.commit();
 
-        Intent intent = new Intent(this, AddPeopleActivity.class);
+
+        Intent intent = new Intent(this, ViewProductActivity.class);
         startActivity(intent);
     }
 
@@ -64,11 +67,46 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.menuCart);
+        /*MenuItem menuItem = menu.findItem(R.id.menuCart);
         View actionView = menuItem.getActionView();
 
         TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
-        txtQuantityCart.setVisibility(View.GONE);
+        txtQuantityCart.setVisibility(View.GONE);*/
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.home_nav) {
+                Intent intent = new Intent(MainActivity.this, ViewProductActivity.class);
+                startActivity(intent);
+                return true;
+        } else if (item.getItemId() == R.id.chat_nav) {
+            Intent intent = new Intent(MainActivity.this, ViewProductActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.location_nav) {
+            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.bill_nav) {
+            Intent intent = new Intent(MainActivity.this, BillActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.menuCart) {
+            View actionView = item.getActionView();
+            TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+            txtQuantityCart.setVisibility(View.GONE);
+            return true;
+        } else if (item.getItemId() == R.id.logout_nav) {
+            preferences = getSharedPreferences("MIA", MODE_PRIVATE);
+            editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
