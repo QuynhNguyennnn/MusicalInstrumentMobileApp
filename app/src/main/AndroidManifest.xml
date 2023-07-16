@@ -21,9 +21,11 @@
             android:exported="false" />
         <activity
             android:name=".ActivityController.BillActivity"
+            android:parentActivityName=".ActivityController.ViewProductActivity"
             android:exported="false" />
         <activity
             android:name=".ActivityController.CartActivity"
+            android:parentActivityName=".ActivityController.ViewProductActivity"
             android:exported="false" />
         <activity
             android:name=".ActivityController.ViewProductActivity"
@@ -40,18 +42,22 @@
             android:exported="false" />
         <activity
             android:name=".ActivityController.RegisterActivity"
+            android:parentActivityName=".ActivityController.ViewProductActivity"
             android:exported="false" />
         <activity
             android:name=".ActivityController.MapsActivity"
+            android:parentActivityName=".ActivityController.ViewProductActivity"
             android:exported="false" />
         <activity
             android:name=".ActivityController.ViewDetailProductActivity"
-            android:exported="false"
-            android:parentActivityName=".ActivityController.ViewProductActivity" />
+            android:exported="true"
+            android:parentActivityName=".ActivityController.ViewProductActivity">
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAM9ZZvKX99TD9Nx8A69XkeOFMNyfPMY-w" />
+            android:value="AIzaSyDYUf9n2BOmMqqG4ER5KtQbJ5fNX390MlY" />
 
         <activity
             android:name=".MainActivity"

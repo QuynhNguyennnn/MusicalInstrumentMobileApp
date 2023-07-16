@@ -4,15 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.highmusicapp.R;
@@ -43,6 +48,9 @@ public class MapsActivity extends AppCompatActivity {
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient fusedLocationProviderClient;
 
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +78,75 @@ public class MapsActivity extends AppCompatActivity {
                 }).check();
 
         addControls();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+//        MenuItem item = findViewById(R.id.menuCart);
+
+
+        if (preferences.contains("username")) {
+            MenuItem menuItem = menu.findItem(R.id.login_nav);
+            menuItem.setVisible(false);
+        } else {
+            MenuItem menuItem = menu.findItem(R.id.logout_nav);
+            menuItem.setVisible(false);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.home_nav) {
+            Intent intent = new Intent(MapsActivity.this, ViewProductActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.chat_nav) {
+            Intent intent = new Intent(MapsActivity.this, ViewProductActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.location_nav) {
+            recreate();
+            return true;
+        } else if (item.getItemId() == R.id.bill_nav) {
+            Intent intent = new Intent(MapsActivity.this, BillActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.menuCart) {
+            View actionView = item.getActionView();
+
+            TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+
+            txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
+            if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+            {
+                txtQuantityCart.setVisibility(View.GONE);
+            }
+
+            actionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MapsActivity.this, CartActivity.class);
+                    startActivity(intent);
+                }
+            });
+            return true;
+        } else if (item.getItemId() == R.id.logout_nav) {
+            preferences = getSharedPreferences("MIA", MODE_PRIVATE);
+            editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(MapsActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.login_nav) {
+            Intent intent = new Intent(MapsActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getCurrentLocation() {

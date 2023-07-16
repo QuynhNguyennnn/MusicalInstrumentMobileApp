@@ -1,5 +1,6 @@
 package com.example.highmusicapp.ActivityController;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.example.highmusicapp.AdapterController.BillAdapter;
 import com.example.highmusicapp.AdapterController.BillListener;
 import com.example.highmusicapp.Dao.BillDAO;
 import com.example.highmusicapp.HighMusicDatabase;
+import com.example.highmusicapp.MainActivity;
 import com.example.highmusicapp.Models.Bill;
 import com.example.highmusicapp.Models.Product;
 import com.example.highmusicapp.R;
@@ -31,6 +33,8 @@ public class BillActivity extends AppCompatActivity implements BillListener {
     private BillAdapter billAdapter;
     private SharedPreferences preferences;
     private Context context = this;
+
+    SharedPreferences.Editor editor;
 
     RecyclerView billRecyclerView;
     @Override
@@ -78,24 +82,68 @@ public class BillActivity extends AppCompatActivity implements BillListener {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.menuCart);
-        View actionView = menuItem.getActionView();
+//        MenuItem item = menu.findItem(R.id.menuCart);
 
-        TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
 
-        txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
-        if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
-        {
-            txtQuantityCart.setVisibility(View.GONE);
+        if (preferences.contains("username")) {
+            MenuItem menuItem = menu.findItem(R.id.login_nav);
+            menuItem.setVisible(false);
+        } else {
+            MenuItem menuItem = menu.findItem(R.id.logout_nav);
+            menuItem.setVisible(false);
         }
-
-        actionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CartActivity.class);
-                startActivity(intent);
-            }
-        });
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.home_nav) {
+            Intent intent = new Intent(BillActivity.this, ViewProductActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.chat_nav) {
+            Intent intent = new Intent(BillActivity.this, ViewProductActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.location_nav) {
+            Intent intent = new Intent(BillActivity.this, MapsActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.bill_nav) {
+            recreate();
+            return true;
+        } else if (item.getItemId() == R.id.menuCart) {
+
+            View actionView = item.getActionView();
+
+            TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+
+            txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
+            if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+            {
+                txtQuantityCart.setVisibility(View.GONE);
+            }
+            actionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, CartActivity.class);
+                    startActivity(intent);
+                }
+            });
+            return true;
+        } else if (item.getItemId() == R.id.logout_nav) {
+            preferences = getSharedPreferences("MIA", MODE_PRIVATE);
+            editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(BillActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.login_nav) {
+            Intent intent = new Intent(BillActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
