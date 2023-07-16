@@ -69,7 +69,23 @@ public class ViewBillDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
-//        MenuItem item = findViewById(R.id.menuCart);
+        MenuItem cart = menu.findItem(R.id.menuCart);
+        View actionView = cart.getActionView();
+
+        TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+
+        txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
+        if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+        {
+            txtQuantityCart.setVisibility(View.GONE);
+        }
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CartActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         if (preferences.contains("username")) {
@@ -99,25 +115,6 @@ public class ViewBillDetailActivity extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.bill_nav) {
             recreate();
-            return true;
-        } else if (item.getItemId() == R.id.menuCart) {
-            View actionView = item.getActionView();
-
-            TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
-
-            txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
-            if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
-            {
-                txtQuantityCart.setVisibility(View.GONE);
-            }
-
-            actionView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, CartActivity.class);
-                    startActivity(intent);
-                }
-            });
             return true;
         } else if (item.getItemId() == R.id.logout_nav) {
             preferences = getSharedPreferences("MIA", MODE_PRIVATE);

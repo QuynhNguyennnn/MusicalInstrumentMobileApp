@@ -117,8 +117,8 @@ public class ViewDetailProductActivity extends AppCompatActivity {
                     }
                 }else{
                     Cart cart = new Cart(preferences.getInt("id", 1), true);
-                    cartDAO.createCart(cart);
-                    Cart_Product cart_product = new Cart_Product((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID(), 1, true);
+                    int cartID = (int)cartDAO.createCart(cart);
+                    Cart_Product cart_product = new Cart_Product(cartID, product.getProductID(), 1, true);
                     cart_productDAO.addProductToCart(cart_product);
                 }
                 Toast.makeText(context, "Add to cart successful", Toast.LENGTH_SHORT).show();
@@ -143,8 +143,23 @@ public class ViewDetailProductActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
-//        MenuItem item = findViewById(R.id.menuCart);
+        MenuItem cart = menu.findItem(R.id.menuCart);
+        View actionView = cart.getActionView();
 
+        TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+
+        txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
+        if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+        {
+            txtQuantityCart.setVisibility(View.GONE);
+        }
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CartActivity.class);
+                startActivity(intent);
+            }
+        });
 
         if (preferences.contains("username")) {
             MenuItem menuItem = menu.findItem(R.id.login_nav);
@@ -173,24 +188,6 @@ public class ViewDetailProductActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.bill_nav) {
             Intent intent = new Intent(ViewDetailProductActivity.this, BillActivity.class);
             startActivity(intent);
-            return true;
-        } else if (item.getItemId() == R.id.menuCart) {
-            View actionView = item.getActionView();
-
-            TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
-
-            txtQuantityCart.setText(String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
-            if (cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1))) == 0){
-                txtQuantityCart.setVisibility(View.GONE);
-            }
-
-            actionView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, CartActivity.class);
-                    startActivity(intent);
-                }
-            });
             return true;
         } else if (item.getItemId() == R.id.logout_nav) {
             preferences = getSharedPreferences("MIA", MODE_PRIVATE);

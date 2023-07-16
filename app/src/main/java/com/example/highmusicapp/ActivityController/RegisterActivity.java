@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.highmusicapp.Dao.AccountDAO;
+import com.example.highmusicapp.Dao.CustomerDAO;
 import com.example.highmusicapp.Dao.PeopleDAO;
 import com.example.highmusicapp.HighMusicDatabase;
 import com.example.highmusicapp.Models.Account;
+import com.example.highmusicapp.Models.Customer;
 import com.example.highmusicapp.Models.People;
 import com.example.highmusicapp.Models.Product;
 import com.example.highmusicapp.Models.Role;
@@ -40,11 +42,12 @@ public class RegisterActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private AccountDAO accountDAO;
     private PeopleDAO peopleDAO;
+    private CustomerDAO customerDAO;
 
     private HighMusicDatabase highMusicDatabase;
     private static Pattern pattern;
     private Matcher matchedEmail;
-    private People people;
+    private Customer customer;
     private static final String Email_Validate = "^[A-Za-z0-9+_.-]+@(.+)$";
 
     @SuppressLint("MissingInflatedId")
@@ -56,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         preferences = getSharedPreferences("MIA", MODE_PRIVATE);
         editor = preferences.edit();
         pattern = Pattern.compile(Email_Validate);
-        people = (People) getIntent().getSerializableExtra("peopleModel");
+        customer = (Customer) getIntent().getSerializableExtra("customerModel");
 
         email_input = findViewById(R.id.email_input);
         username_input = findViewById(R.id.username_input);
@@ -97,8 +100,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void run() {
                                     highMusicDatabase = HighMusicDatabase.getInstance(RegisterActivity.this);
                                     peopleDAO = highMusicDatabase.getPeopleDAO();
+                                    customerDAO = highMusicDatabase.getCustomerDAO();
                                     Account account = new Account();
+                                    People people = new People(customer.getFullName(),customer.getPhoneNumber(),customer.getAddress(),customer.isStatus());
                                     int peopleID = (int) peopleDAO.insertPeople(people);
+                                    customer.setPeopleID(peopleID);
+                                    customerDAO.insertCustomer(customer);
                                     account.setPeopleID(peopleID);
                                     account.setEmail(email);
                                     account.setUsername(username);
@@ -139,7 +146,11 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
-//        MenuItem item = findViewById(R.id.menuCart);
+        MenuItem cart = menu.findItem(R.id.menuCart);
+        View actionView = cart.getActionView();
+
+        TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
+        txtQuantityCart.setVisibility(View.GONE);
 
         if (preferences.contains("username")) {
             MenuItem menuItem = menu.findItem(R.id.login_nav);
@@ -167,25 +178,6 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.bill_nav) {
             Intent intent = new Intent(RegisterActivity.this, BillActivity.class);
             startActivity(intent);
-            return true;
-        } else if (item.getItemId() == R.id.menuCart) {
-            View actionView = item.getActionView();
-
-            TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
-
-            txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
-            if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
-            {
-                txtQuantityCart.setVisibility(View.GONE);
-            }
-
-            actionView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(RegisterActivity.this, CartActivity.class);
-                    startActivity(intent);
-                }
-            });
             return true;
         } else if (item.getItemId() == R.id.logout_nav) {
             preferences = getSharedPreferences("MIA", MODE_PRIVATE);

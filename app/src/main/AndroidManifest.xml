@@ -21,7 +21,6 @@
             android:exported="false" />
         <activity
             android:name=".ActivityController.BillActivity"
-            android:parentActivityName=".ActivityController.ViewProductActivity"
             android:exported="false" />
         <activity
             android:name=".ActivityController.CartActivity"
