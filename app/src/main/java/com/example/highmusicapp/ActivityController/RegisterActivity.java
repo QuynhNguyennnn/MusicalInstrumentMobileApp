@@ -109,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Toast.makeText(RegisterActivity.this, "Register suceessful!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(RegisterActivity.this, "Register successful!", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     editor.putInt("id", peopleID);
