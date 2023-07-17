@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
 
 
-        Intent intent = new Intent(this, LoginActivity.class);
+
+        Intent intent = new Intent(this, ViewProductActivity.class);
         startActivity(intent);
     }
 
