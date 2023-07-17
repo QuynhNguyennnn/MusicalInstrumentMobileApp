@@ -66,6 +66,11 @@ public class CartActivity extends AppCompatActivity implements CartListener{
         cartRecyclerView = (RecyclerView) findViewById(R.id.cartRecycler);
         cartAdapter = new CartAdapter(this,(int) cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)),(CartListener) this);
 
+        if (!preferences.contains("username")) {
+            Toast.makeText(context, "You must login first!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CartActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
         cartRecyclerView.setAdapter(cartAdapter);
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -155,8 +160,8 @@ public class CartActivity extends AppCompatActivity implements CartListener{
 
         TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
 
-        txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
-        if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+        txtQuantityCart.setText(preferences.getString("cartQuantity", "0"));
+        if(Integer.parseInt(preferences.getString("cartQuantity", "0")) == 0)
         {
             txtQuantityCart.setVisibility(View.GONE);
         }
@@ -185,7 +190,7 @@ public class CartActivity extends AppCompatActivity implements CartListener{
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.chat_nav) {
-            Intent intent = new Intent(CartActivity.this, ViewProductActivity.class);
+            Intent intent = new Intent(CartActivity.this, ChatActivity.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.location_nav) {

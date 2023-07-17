@@ -89,10 +89,11 @@ public class AddPeopleActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.home_nav) {
-            recreate();
+            Intent intent = new Intent(AddPeopleActivity.this, ViewProductActivity.class);
+            startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.chat_nav) {
-            Intent intent = new Intent(AddPeopleActivity.this, ViewProductActivity.class);
+            Intent intent = new Intent(AddPeopleActivity.this, ChatActivity.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.location_nav) {

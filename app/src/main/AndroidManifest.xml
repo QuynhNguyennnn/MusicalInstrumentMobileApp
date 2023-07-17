@@ -17,6 +17,10 @@
         android:theme="@style/Platform.MaterialComponents.Light"
         tools:targetApi="31">
         <activity
+            android:name=".ActivityController.ChatActivity"
+            android:parentActivityName=".ActivityController.ViewProductActivity"
+            android:exported="false" />
+        <activity
             android:name=".ActivityController.AddPeopleActivity"
             android:exported="false" />
         <activity
@@ -24,8 +28,8 @@
             android:exported="false" />
         <activity
             android:name=".ActivityController.CartActivity"
-            android:parentActivityName=".ActivityController.ViewProductActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ActivityController.ViewProductActivity" />
         <activity
             android:name=".ActivityController.ViewProductActivity"
             android:exported="false" />
@@ -41,22 +45,24 @@
             android:exported="false" />
         <activity
             android:name=".ActivityController.RegisterActivity"
-            android:parentActivityName=".ActivityController.ViewProductActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ActivityController.ViewProductActivity" />
         <activity
             android:name=".ActivityController.MapsActivity"
-            android:parentActivityName=".ActivityController.ViewProductActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ActivityController.ViewProductActivity" />
         <activity
             android:name=".ActivityController.ViewDetailProductActivity"
             android:exported="true"
-            android:parentActivityName=".ActivityController.ViewProductActivity">
+            android:parentActivityName=".ActivityController.ViewProductActivity"></activity>
 
-        </activity>
-
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBTnVQCIfg6cuN64li_ixCqWahDtXptRew" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

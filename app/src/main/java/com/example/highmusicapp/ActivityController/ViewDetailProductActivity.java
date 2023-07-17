@@ -108,25 +108,29 @@ public class ViewDetailProductActivity extends AppCompatActivity {
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cartDAO.findCartByCustomerID(preferences.getInt("id", 1))){
-                    if (cart_productDAO.findProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID())){
-                        cart_productDAO.increaseQuantity((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID());
+                if (!preferences.contains("username")) {
+                    Toast.makeText(context, "You must login first!", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (cartDAO.findCartByCustomerID(preferences.getInt("id", 1))) {
+                        if (cart_productDAO.findProductInCart((int) cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID())) {
+                            cart_productDAO.increaseQuantity((int) cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID());
+                        } else {
+                            Cart_Product cart_product = new Cart_Product((int) cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID(), 1, true);
+                            cart_productDAO.addProductToCart(cart_product);
+                        }
                     } else {
-                        Cart_Product cart_product = new Cart_Product((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)), product.getProductID(), 1, true);
+                        Cart cart = new Cart(preferences.getInt("id", 1), true);
+                        int cartID = (int) cartDAO.createCart(cart);
+                        Cart_Product cart_product = new Cart_Product(cartID, product.getProductID(), 1, true);
                         cart_productDAO.addProductToCart(cart_product);
                     }
-                }else{
-                    Cart cart = new Cart(preferences.getInt("id", 1), true);
-                    int cartID = (int)cartDAO.createCart(cart);
-                    Cart_Product cart_product = new Cart_Product(cartID, product.getProductID(), 1, true);
-                    cart_productDAO.addProductToCart(cart_product);
+                    Toast.makeText(context, "Add to cart successful", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(context, ViewProductActivity.class);
+                    editor.putString("cartQuantity", String.valueOf(cart_productDAO.countProductInCart((int) cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
+                    editor.commit();
+                    invalidateOptionsMenu();
+                    startActivity(intent);
                 }
-                Toast.makeText(context, "Add to cart successful", Toast.LENGTH_SHORT).show();
-                intent = new Intent(context, ViewProductActivity.class);
-                editor.putString("cartQuantity",String.valueOf(cart_productDAO.countProductInCart((int)cartDAO.getCartIDByCustomerID(preferences.getInt("id", 1)))));
-                editor.commit();
-                invalidateOptionsMenu();
-                startActivity(intent);
             }
         });
 
@@ -148,8 +152,8 @@ public class ViewDetailProductActivity extends AppCompatActivity {
 
         TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
 
-        txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
-        if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+        txtQuantityCart.setText(preferences.getString("cartQuantity", "0"));
+        if(Integer.parseInt(preferences.getString("cartQuantity", "0")) == 0)
         {
             txtQuantityCart.setVisibility(View.GONE);
         }
@@ -178,7 +182,7 @@ public class ViewDetailProductActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.chat_nav) {
-            Intent intent = new Intent(ViewDetailProductActivity.this, ViewProductActivity.class);
+            Intent intent = new Intent(ViewDetailProductActivity.this, ChatActivity.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.location_nav) {

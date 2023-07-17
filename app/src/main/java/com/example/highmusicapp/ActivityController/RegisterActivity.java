@@ -165,10 +165,11 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.home_nav) {
-            recreate();
+            Intent intent = new Intent(RegisterActivity.this, ViewProductActivity.class);
+            startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.chat_nav) {
-            Intent intent = new Intent(RegisterActivity.this, ViewProductActivity.class);
+            Intent intent = new Intent(RegisterActivity.this, ChatActivity.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.location_nav) {
@@ -188,7 +189,8 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.login_nav) {
-            recreate();
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

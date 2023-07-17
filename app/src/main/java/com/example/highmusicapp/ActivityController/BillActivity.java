@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.highmusicapp.AdapterController.BillAdapter;
 import com.example.highmusicapp.AdapterController.BillListener;
@@ -47,6 +48,12 @@ public class BillActivity extends AppCompatActivity implements BillListener {
         billAdapter = new BillAdapter(this, (BillListener) this);
         highMusicDatabase = HighMusicDatabase.getInstance(this);
         billDAO = highMusicDatabase.getBillDAO();
+
+        if (!preferences.contains("username")) {
+            Toast.makeText(context, "You must logi first!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(BillActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
         billRecyclerView.setAdapter(billAdapter);
         billRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -86,8 +93,8 @@ public class BillActivity extends AppCompatActivity implements BillListener {
 
         TextView txtQuantityCart = actionView.findViewById(R.id.txtQuantityCart);
 
-        txtQuantityCart.setText(preferences.getString("cartQuantity", "-1"));
-        if(Integer.parseInt(preferences.getString("cartQuantity", "-1")) == 0)
+        txtQuantityCart.setText(preferences.getString("cartQuantity", "0"));
+        if(Integer.parseInt(preferences.getString("cartQuantity", "0")) == 0)
         {
             txtQuantityCart.setVisibility(View.GONE);
         }
@@ -117,7 +124,7 @@ public class BillActivity extends AppCompatActivity implements BillListener {
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.chat_nav) {
-            Intent intent = new Intent(BillActivity.this, ViewProductActivity.class);
+            Intent intent = new Intent(BillActivity.this, ChatActivity.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.location_nav) {

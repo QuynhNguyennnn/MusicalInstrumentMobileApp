@@ -127,14 +127,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.home_nav) {
-            recreate();
+            Intent intent = new Intent(LoginActivity.this, ViewProductActivity.class);
+            startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.chat_nav) {
-            Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+            Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.location_nav) {
-            Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.bill_nav) {
