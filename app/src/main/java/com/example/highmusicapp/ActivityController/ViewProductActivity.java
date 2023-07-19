@@ -48,6 +48,7 @@ public class ViewProductActivity extends AppCompatActivity implements ProductLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_product);
+        preferences = getSharedPreferences("MIA", MODE_PRIVATE);
 
         initUI();
 //        if (preferences.contains("username")) {
