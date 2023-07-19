@@ -50,9 +50,9 @@ public class ViewProductActivity extends AppCompatActivity implements ProductLis
         setContentView(R.layout.activity_view_product);
 
         initUI();
-        if (preferences.contains("username")) {
-            Toast.makeText(context, "Welcome " + preferences.getString("username", ""), Toast.LENGTH_SHORT).show();
-        }
+//        if (preferences.contains("username")) {
+//            Toast.makeText(context, "Welcome " + preferences.getString("username", ""), Toast.LENGTH_SHORT).show();
+//        }
 
         productRecyclerView = (RecyclerView) findViewById(R.id.productRecycler);
         preferences = getSharedPreferences("MIA", MODE_PRIVATE);

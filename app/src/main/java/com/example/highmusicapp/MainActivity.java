@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
         editor.clear();
         editor.commit();
 
-
-        Intent intent = new Intent(this, ViewProductActivity.class);
+        Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
 

@@ -86,13 +86,13 @@ public class MapsActivity extends AppCompatActivity {
 //        MenuItem item = findViewById(R.id.menuCart);
 
 
-        if (preferences.contains("username")) {
-            MenuItem menuItem = menu.findItem(R.id.login_nav);
-            menuItem.setVisible(false);
-        } else {
-            MenuItem menuItem = menu.findItem(R.id.logout_nav);
-            menuItem.setVisible(false);
-        }
+//        if (preferences.contains("username")) {
+//            MenuItem menuItem = menu.findItem(R.id.login_nav);
+//            menuItem.setVisible(false);
+//        } else {
+//            MenuItem menuItem = menu.findItem(R.id.logout_nav);
+//            menuItem.setVisible(false);
+//        }
 
         return true;
     }
