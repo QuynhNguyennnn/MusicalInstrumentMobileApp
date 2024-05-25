@@ -1,1 +1,2 @@
-# PRM392---Mobile---Group-2
+# Musical Store Mobile App
+Android App - Java - Firebase
